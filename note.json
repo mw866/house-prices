@@ -1,0 +1,980 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n# CS 5304 Assignments #4: Project Option 2: Creative Feature Engineering\nhttps://www.kaggle.com/c/house-prices-advanced-regression-techniques\nBy Chris M Wang (mw866@cornell.edu)",
+      "user": "anonymous",
+      "dateUpdated": "May 18, 2017 10:46:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eCS 5304 Assignments #4: Project Option 2: Creative Feature Engineering\u003c/h1\u003e\n\u003cp\u003e\u003ca href\u003d\"https://www.kaggle.com/c/house-prices-advanced-regression-techniques\"\u003ehttps://www.kaggle.com/c/house-prices-advanced-regression-techniques\u003c/a\u003e\u003cbr/\u003eBy Chris M Wang (\u003ca href\u003d\"mailto:\u0026#109;\u0026#x77;\u0026#56;\u0026#x36;\u0026#x36;\u0026#x40;\u0026#x63;\u0026#111;\u0026#x72;\u0026#110;\u0026#101;l\u0026#108;\u0026#x2e;\u0026#x65;d\u0026#x75;\"\u003e\u0026#109;\u0026#x77;\u0026#56;\u0026#x36;\u0026#x36;\u0026#x40;\u0026#x63;\u0026#111;\u0026#x72;\u0026#110;\u0026#101;l\u0026#108;\u0026#x2e;\u0026#x65;d\u0026#x75;\u003c/a\u003e)\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495117922643_1832487229",
+      "id": "20170518-103202_1972109341",
+      "dateCreated": "May 18, 2017 10:32:02 AM",
+      "dateStarted": "May 18, 2017 10:46:19 PM",
+      "dateFinished": "May 18, 2017 10:46:19 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n## Initialization",
+      "user": "anonymous",
+      "dateUpdated": "May 18, 2017 10:46:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eInitialization\u003c/h2\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495135344894_-1409367233",
+      "id": "20170518-152224_1015802451",
+      "dateCreated": "May 18, 2017 3:22:24 PM",
+      "dateStarted": "May 18, 2017 10:46:19 PM",
+      "dateFinished": "May 18, 2017 10:46:19 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Initialization",
+      "text": "%pyspark\nimport numpy as np\nfrom pyspark.sql.functions import *\nfrom pyspark.sql.types import *\nfrom pyspark.sql import functions\nfrom __future__ import division\n\nfrom pyspark.ml.feature import VectorAssembler, OneHotEncoder, StringIndexer, PCA\nfrom pyspark.ml import Pipeline\nfrom pyspark.sql.types import *\n\nimport os.path\ndir_name \u003d \"/Users/kylin1989/VM/dev/house-prices/data\"\n\nspark \u003d SparkSession.builder.appName(\"house-price\").config(\"spark.sql.broadcastTimeout\", \"6000\").getOrCreate()",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:10:09 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495117610642_-1235391587",
+      "id": "20170518-102650_2139206607",
+      "dateCreated": "May 18, 2017 10:26:50 AM",
+      "dateStarted": "May 19, 2017 12:10:09 PM",
+      "dateFinished": "May 19, 2017 12:10:09 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load train.csv",
+      "text": "%pyspark\ntrain \u003d spark.read.format(\"csv\").options(header\u003d\"true\", inferSchema\u003d\"true\").load(os.path.join(dir_name, \"train.csv\"))\ntrain.printSchema()",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:20:07 PM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 118.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- Id: integer (nullable \u003d true)\n |-- MSSubClass: integer (nullable \u003d true)\n |-- MSZoning: string (nullable \u003d true)\n |-- LotFrontage: string (nullable \u003d true)\n |-- LotArea: integer (nullable \u003d true)\n |-- Street: string (nullable \u003d true)\n |-- Alley: string (nullable \u003d true)\n |-- LotShape: string (nullable \u003d true)\n |-- LandContour: string (nullable \u003d true)\n |-- Utilities: string (nullable \u003d true)\n |-- LotConfig: string (nullable \u003d true)\n |-- LandSlope: string (nullable \u003d true)\n |-- Neighborhood: string (nullable \u003d true)\n |-- Condition1: string (nullable \u003d true)\n |-- Condition2: string (nullable \u003d true)\n |-- BldgType: string (nullable \u003d true)\n |-- HouseStyle: string (nullable \u003d true)\n |-- OverallQual: integer (nullable \u003d true)\n |-- OverallCond: integer (nullable \u003d true)\n |-- YearBuilt: integer (nullable \u003d true)\n |-- YearRemodAdd: integer (nullable \u003d true)\n |-- RoofStyle: string (nullable \u003d true)\n |-- RoofMatl: string (nullable \u003d true)\n |-- Exterior1st: string (nullable \u003d true)\n |-- Exterior2nd: string (nullable \u003d true)\n |-- MasVnrType: string (nullable \u003d true)\n |-- MasVnrArea: string (nullable \u003d true)\n |-- ExterQual: string (nullable \u003d true)\n |-- ExterCond: string (nullable \u003d true)\n |-- Foundation: string (nullable \u003d true)\n |-- BsmtQual: string (nullable \u003d true)\n |-- BsmtCond: string (nullable \u003d true)\n |-- BsmtExposure: string (nullable \u003d true)\n |-- BsmtFinType1: string (nullable \u003d true)\n |-- BsmtFinSF1: integer (nullable \u003d true)\n |-- BsmtFinType2: string (nullable \u003d true)\n |-- BsmtFinSF2: integer (nullable \u003d true)\n |-- BsmtUnfSF: integer (nullable \u003d true)\n |-- TotalBsmtSF: integer (nullable \u003d true)\n |-- Heating: string (nullable \u003d true)\n |-- HeatingQC: string (nullable \u003d true)\n |-- CentralAir: string (nullable \u003d true)\n |-- Electrical: string (nullable \u003d true)\n |-- 1stFlrSF: integer (nullable \u003d true)\n |-- 2ndFlrSF: integer (nullable \u003d true)\n |-- LowQualFinSF: integer (nullable \u003d true)\n |-- GrLivArea: integer (nullable \u003d true)\n |-- BsmtFullBath: integer (nullable \u003d true)\n |-- BsmtHalfBath: integer (nullable \u003d true)\n |-- FullBath: integer (nullable \u003d true)\n |-- HalfBath: integer (nullable \u003d true)\n |-- BedroomAbvGr: integer (nullable \u003d true)\n |-- KitchenAbvGr: integer (nullable \u003d true)\n |-- KitchenQual: string (nullable \u003d true)\n |-- TotRmsAbvGrd: integer (nullable \u003d true)\n |-- Functional: string (nullable \u003d true)\n |-- Fireplaces: integer (nullable \u003d true)\n |-- FireplaceQu: string (nullable \u003d true)\n |-- GarageType: string (nullable \u003d true)\n |-- GarageYrBlt: string (nullable \u003d true)\n |-- GarageFinish: string (nullable \u003d true)\n |-- GarageCars: integer (nullable \u003d true)\n |-- GarageArea: integer (nullable \u003d true)\n |-- GarageQual: string (nullable \u003d true)\n |-- GarageCond: string (nullable \u003d true)\n |-- PavedDrive: string (nullable \u003d true)\n |-- WoodDeckSF: integer (nullable \u003d true)\n |-- OpenPorchSF: integer (nullable \u003d true)\n |-- EnclosedPorch: integer (nullable \u003d true)\n |-- 3SsnPorch: integer (nullable \u003d true)\n |-- ScreenPorch: integer (nullable \u003d true)\n |-- PoolArea: integer (nullable \u003d true)\n |-- PoolQC: string (nullable \u003d true)\n |-- Fence: string (nullable \u003d true)\n |-- MiscFeature: string (nullable \u003d true)\n |-- MiscVal: integer (nullable \u003d true)\n |-- MoSold: integer (nullable \u003d true)\n |-- YrSold: integer (nullable \u003d true)\n |-- SaleType: string (nullable \u003d true)\n |-- SaleCondition: string (nullable \u003d true)\n |-- SalePrice: integer (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495117920137_-1446959154",
+      "id": "20170518-103200_1200606317",
+      "dateCreated": "May 18, 2017 10:32:00 AM",
+      "dateStarted": "May 19, 2017 12:20:07 PM",
+      "dateFinished": "May 19, 2017 12:20:07 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Generates test_schema based on train_schema",
+      "text": "%pyspark\ntrain_schema_list \u003d train.schema.fields\ntrain_schema_list\nSalePrice_StructType \u003d StructField(\"SalePrice\", IntegerType(), True)\nSalePrice_StructType\ntrain_schema_list.remove(SalePrice_StructType)\ntest_schema\u003d StructType(train_schema_list)\ntest_schema",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:46:14 PM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 84.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "StructType(List(StructField(Id,IntegerType,true),StructField(MSSubClass,IntegerType,true),StructField(MSZoning,StringType,true),StructField(LotFrontage,StringType,true),StructField(LotArea,IntegerType,true),StructField(Street,StringType,true),StructField(Alley,StringType,true),StructField(LotShape,StringType,true),StructField(LandContour,StringType,true),StructField(Utilities,StringType,true),StructField(LotConfig,StringType,true),StructField(LandSlope,StringType,true),StructField(Neighborhood,StringType,true),StructField(Condition1,StringType,true),StructField(Condition2,StringType,true),StructField(BldgType,StringType,true),StructField(HouseStyle,StringType,true),StructField(OverallQual,IntegerType,true),StructField(OverallCond,IntegerType,true),StructField(YearBuilt,IntegerType,true),StructField(YearRemodAdd,IntegerType,true),StructField(RoofStyle,StringType,true),StructField(RoofMatl,StringType,true),StructField(Exterior1st,StringType,true),StructField(Exterior2nd,StringType,true),StructField(MasVnrType,StringType,true),StructField(MasVnrArea,StringType,true),StructField(ExterQual,StringType,true),StructField(ExterCond,StringType,true),StructField(Foundation,StringType,true),StructField(BsmtQual,StringType,true),StructField(BsmtCond,StringType,true),StructField(BsmtExposure,StringType,true),StructField(BsmtFinType1,StringType,true),StructField(BsmtFinSF1,IntegerType,true),StructField(BsmtFinType2,StringType,true),StructField(BsmtFinSF2,IntegerType,true),StructField(BsmtUnfSF,IntegerType,true),StructField(TotalBsmtSF,IntegerType,true),StructField(Heating,StringType,true),StructField(HeatingQC,StringType,true),StructField(CentralAir,StringType,true),StructField(Electrical,StringType,true),StructField(1stFlrSF,IntegerType,true),StructField(2ndFlrSF,IntegerType,true),StructField(LowQualFinSF,IntegerType,true),StructField(GrLivArea,IntegerType,true),StructField(BsmtFullBath,IntegerType,true),StructField(BsmtHalfBath,IntegerType,true),StructField(FullBath,IntegerType,true),StructField(HalfBath,IntegerType,true),StructField(BedroomAbvGr,IntegerType,true),StructField(KitchenAbvGr,IntegerType,true),StructField(KitchenQual,StringType,true),StructField(TotRmsAbvGrd,IntegerType,true),StructField(Functional,StringType,true),StructField(Fireplaces,IntegerType,true),StructField(FireplaceQu,StringType,true),StructField(GarageType,StringType,true),StructField(GarageYrBlt,StringType,true),StructField(GarageFinish,StringType,true),StructField(GarageCars,IntegerType,true),StructField(GarageArea,IntegerType,true),StructField(GarageQual,StringType,true),StructField(GarageCond,StringType,true),StructField(PavedDrive,StringType,true),StructField(WoodDeckSF,IntegerType,true),StructField(OpenPorchSF,IntegerType,true),StructField(EnclosedPorch,IntegerType,true),StructField(3SsnPorch,IntegerType,true),StructField(ScreenPorch,IntegerType,true),StructField(PoolArea,IntegerType,true),StructField(PoolQC,StringType,true),StructField(Fence,StringType,true),StructField(MiscFeature,StringType,true),StructField(MiscVal,IntegerType,true),StructField(MoSold,IntegerType,true),StructField(YrSold,IntegerType,true),StructField(SaleType,StringType,true),StructField(SaleCondition,StringType,true)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495209638021_-5227948",
+      "id": "20170519-120038_235580985",
+      "dateCreated": "May 19, 2017 12:00:38 PM",
+      "dateStarted": "May 19, 2017 12:20:09 PM",
+      "dateFinished": "May 19, 2017 12:20:09 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load test.csv",
+      "text": "%pyspark\ntest \u003d spark.read.format(\"csv\").options(header\u003d\"true\", inferSchema\u003d\"false\").load(os.path.join(dir_name, \"test.csv\"), schema\u003dtest_schema)\ntest.printSchema()",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:19:49 PM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 158.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- Id: integer (nullable \u003d true)\n |-- MSSubClass: integer (nullable \u003d true)\n |-- MSZoning: string (nullable \u003d true)\n |-- LotFrontage: string (nullable \u003d true)\n |-- LotArea: integer (nullable \u003d true)\n |-- Street: string (nullable \u003d true)\n |-- Alley: string (nullable \u003d true)\n |-- LotShape: string (nullable \u003d true)\n |-- LandContour: string (nullable \u003d true)\n |-- Utilities: string (nullable \u003d true)\n |-- LotConfig: string (nullable \u003d true)\n |-- LandSlope: string (nullable \u003d true)\n |-- Neighborhood: string (nullable \u003d true)\n |-- Condition1: string (nullable \u003d true)\n |-- Condition2: string (nullable \u003d true)\n |-- BldgType: string (nullable \u003d true)\n |-- HouseStyle: string (nullable \u003d true)\n |-- OverallQual: integer (nullable \u003d true)\n |-- OverallCond: integer (nullable \u003d true)\n |-- YearBuilt: integer (nullable \u003d true)\n |-- YearRemodAdd: integer (nullable \u003d true)\n |-- RoofStyle: string (nullable \u003d true)\n |-- RoofMatl: string (nullable \u003d true)\n |-- Exterior1st: string (nullable \u003d true)\n |-- Exterior2nd: string (nullable \u003d true)\n |-- MasVnrType: string (nullable \u003d true)\n |-- MasVnrArea: string (nullable \u003d true)\n |-- ExterQual: string (nullable \u003d true)\n |-- ExterCond: string (nullable \u003d true)\n |-- Foundation: string (nullable \u003d true)\n |-- BsmtQual: string (nullable \u003d true)\n |-- BsmtCond: string (nullable \u003d true)\n |-- BsmtExposure: string (nullable \u003d true)\n |-- BsmtFinType1: string (nullable \u003d true)\n |-- BsmtFinSF1: integer (nullable \u003d true)\n |-- BsmtFinType2: string (nullable \u003d true)\n |-- BsmtFinSF2: integer (nullable \u003d true)\n |-- BsmtUnfSF: integer (nullable \u003d true)\n |-- TotalBsmtSF: integer (nullable \u003d true)\n |-- Heating: string (nullable \u003d true)\n |-- HeatingQC: string (nullable \u003d true)\n |-- CentralAir: string (nullable \u003d true)\n |-- Electrical: string (nullable \u003d true)\n |-- 1stFlrSF: integer (nullable \u003d true)\n |-- 2ndFlrSF: integer (nullable \u003d true)\n |-- LowQualFinSF: integer (nullable \u003d true)\n |-- GrLivArea: integer (nullable \u003d true)\n |-- BsmtFullBath: integer (nullable \u003d true)\n |-- BsmtHalfBath: integer (nullable \u003d true)\n |-- FullBath: integer (nullable \u003d true)\n |-- HalfBath: integer (nullable \u003d true)\n |-- BedroomAbvGr: integer (nullable \u003d true)\n |-- KitchenAbvGr: integer (nullable \u003d true)\n |-- KitchenQual: string (nullable \u003d true)\n |-- TotRmsAbvGrd: integer (nullable \u003d true)\n |-- Functional: string (nullable \u003d true)\n |-- Fireplaces: integer (nullable \u003d true)\n |-- FireplaceQu: string (nullable \u003d true)\n |-- GarageType: string (nullable \u003d true)\n |-- GarageYrBlt: string (nullable \u003d true)\n |-- GarageFinish: string (nullable \u003d true)\n |-- GarageCars: integer (nullable \u003d true)\n |-- GarageArea: integer (nullable \u003d true)\n |-- GarageQual: string (nullable \u003d true)\n |-- GarageCond: string (nullable \u003d true)\n |-- PavedDrive: string (nullable \u003d true)\n |-- WoodDeckSF: integer (nullable \u003d true)\n |-- OpenPorchSF: integer (nullable \u003d true)\n |-- EnclosedPorch: integer (nullable \u003d true)\n |-- 3SsnPorch: integer (nullable \u003d true)\n |-- ScreenPorch: integer (nullable \u003d true)\n |-- PoolArea: integer (nullable \u003d true)\n |-- PoolQC: string (nullable \u003d true)\n |-- Fence: string (nullable \u003d true)\n |-- MiscFeature: string (nullable \u003d true)\n |-- MiscVal: integer (nullable \u003d true)\n |-- MoSold: integer (nullable \u003d true)\n |-- YrSold: integer (nullable \u003d true)\n |-- SaleType: string (nullable \u003d true)\n |-- SaleCondition: string (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495118679588_2054241265",
+      "id": "20170518-104439_331390262",
+      "dateCreated": "May 18, 2017 10:44:39 AM",
+      "dateStarted": "May 19, 2017 12:19:49 PM",
+      "dateFinished": "May 19, 2017 12:19:49 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Group Column by DataTypes",
+      "text": "%pyspark\nschema_dict \u003d dict()\nfor schema_field in train.schema.fields:\n    schema_dict[schema_field.name] \u003d schema_field.dataType\n\nstring_columns, integer_columns \u003d [], []\nfor name, dataType in schema_dict.items():\n    if name \u003d\u003d \u0027Id\u0027 or name \u003d\u003d \u0027SalePrice\u0027:\n        continue\n    elif isinstance(dataType, StringType):\n        string_columns.append(name)\n    elif isinstance(dataType, IntegerType):\n        integer_columns.append(name)\n\nstring_columns,integer_columns\ntrain_integer_columns \u003d train.select(integer_columns)\ntrain_string_columns \u003d train.select(string_columns)",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:25:29 PM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495121466596_1842830753",
+      "id": "20170518-113106_114043888",
+      "dateCreated": "May 18, 2017 11:31:06 AM",
+      "dateStarted": "May 19, 2017 12:25:29 PM",
+      "dateFinished": "May 19, 2017 12:25:29 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n## Data Exploration",
+      "user": "anonymous",
+      "dateUpdated": "May 18, 2017 10:46:22 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eData Exploration\u003c/h2\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495161138234_-88629351",
+      "id": "20170518-223218_1671274262",
+      "dateCreated": "May 18, 2017 10:32:18 PM",
+      "dateStarted": "May 18, 2017 10:46:22 PM",
+      "dateFinished": "May 18, 2017 10:46:22 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Data Exploration: Descriptive stats of the columns of IntegerType",
+      "text": "%pyspark\ntrain_integer_cols_summary \u003d train_integer_columns.describe()\ntrain_integer_cols_summary.registerTempTable(\u0027train_integer_cols_summary\u0027)",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:46:34 PM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 424.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495119427760_1891967530",
+      "id": "20170518-105707_261873106",
+      "dateCreated": "May 18, 2017 10:57:07 AM",
+      "dateStarted": "May 19, 2017 12:46:34 PM",
+      "dateFinished": "May 19, 2017 12:46:35 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%sql\nSELECT * FROM train_integer_cols_summary",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:46:42 PM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 210.0,
+              "optionOpen": false
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql"
+        },
+        "editorMode": "ace/mode/sql",
+        "title": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "summary\t3SsnPorch\tBsmtUnfSF\t2ndFlrSF\tHalfBath\tOverallCond\tLotArea\tGrLivArea\tYearRemodAdd\tBsmtFullBath\tMiscVal\tOverallQual\tKitchenAbvGr\tBsmtFinSF1\tBsmtHalfBath\tTotalBsmtSF\tBsmtFinSF2\tTotRmsAbvGrd\tOpenPorchSF\tPoolArea\tFullBath\tYrSold\tScreenPorch\tMSSubClass\tWoodDeckSF\t1stFlrSF\tYearBuilt\tFireplaces\tBedroomAbvGr\tMoSold\tLowQualFinSF\tGarageArea\tGarageCars\tEnclosedPorch\ncount\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\t1460\nmean\t3.4095890410958902\t567.2404109589041\t346.99246575342465\t0.38287671232876713\t5.575342465753424\t10516.828082191782\t1515.463698630137\t1984.8657534246574\t0.42534246575342466\t43.489041095890414\t6.0993150684931505\t1.0465753424657533\t443.6397260273973\t0.057534246575342465\t1057.4294520547944\t46.54931506849315\t6.517808219178082\t46.66027397260274\t2.758904109589041\t1.5650684931506849\t2007.8157534246575\t15.060958904109588\t56.897260273972606\t94.2445205479452\t1162.626712328767\t1971.267808219178\t0.613013698630137\t2.8664383561643834\t6.321917808219178\t5.844520547945206\t472.9801369863014\t1.7671232876712328\t21.954109589041096\nstddev\t29.317330556781872\t441.8669552924343\t436.528435886257\t0.5028853810928912\t1.1127993367127318\t9981.26493237915\t525.4803834232024\t20.64540680770938\t0.5189106060898061\t496.1230244579441\t1.3829965467415926\t0.22033819838403076\t456.0980908409278\t0.23875264627921197\t438.7053244594709\t161.3192728065416\t1.6253932905840511\t66.2560276766497\t40.17730694453021\t0.5509158012954318\t1.3280951205521145\t55.75741528187416\t42.30057099381045\t125.33879435172422\t386.5877380410744\t30.202904042525294\t0.6446663863122297\t0.8157780441442279\t2.7036262083595113\t48.62308143352024\t213.8048414533803\t0.7473150101111095\t61.11914860172857\nmin\t0\t0\t0\t0\t1\t1300\t334\t1950\t0\t0\t1\t0\t0\t0\t0\t0\t2\t0\t0\t0\t2006\t0\t20\t0\t334\t1872\t0\t0\t1\t0\t0\t0\t0\nmax\t508\t2336\t2065\t2\t9\t215245\t5642\t2010\t3\t15500\t10\t3\t5644\t2\t6110\t1474\t14\t547\t738\t3\t2010\t480\t190\t857\t4692\t2010\t3\t8\t12\t572\t1418\t4\t552\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495119051302_1705411931",
+      "id": "20170518-105051_554246902",
+      "dateCreated": "May 18, 2017 10:50:51 AM",
+      "dateStarted": "May 19, 2017 12:46:42 PM",
+      "dateFinished": "May 19, 2017 12:46:42 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Data exploration: Frequency analysis",
+      "text": "%pyspark\nfor col in string_columns:\n    train.groupBy(col).count().registerTempTable(col)",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:46:45 PM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495120443048_-62119583",
+      "id": "20170518-111403_1400315216",
+      "dateCreated": "May 18, 2017 11:14:03 AM",
+      "dateStarted": "May 19, 2017 12:46:45 PM",
+      "dateFinished": "May 19, 2017 12:46:47 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\n-- Change the FROM keyword to examing the frequeny\nSELECT * FROM MSZoning",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:46:49 PM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 204.0,
+              "optionOpen": false
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql"
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "MSZoning\tcount\nC (all)\t10\nRH\t16\nFV\t65\nRL\t1151\nRM\t218\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495131298386_-1940418411",
+      "id": "20170518-141458_1489085428",
+      "dateCreated": "May 18, 2017 2:14:58 PM",
+      "dateStarted": "May 19, 2017 12:46:49 PM",
+      "dateFinished": "May 19, 2017 12:46:50 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n## Feature Engineering",
+      "user": "anonymous",
+      "dateUpdated": "May 18, 2017 10:46:22 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eFeature Engineering\u003c/h2\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495152766317_-45103391",
+      "id": "20170518-201246_397230112",
+      "dateCreated": "May 18, 2017 8:12:46 PM",
+      "dateStarted": "May 18, 2017 10:46:22 PM",
+      "dateFinished": "May 18, 2017 10:46:22 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Feature shaping - #1 StringIndexing",
+      "text": "%pyspark\ndef string_index(df):\n    # string_index_columns \u003d [ col+\u0027_index\u0027 for col in string_columns]\n    indexers \u003d [StringIndexer(inputCol\u003dcolumn, outputCol\u003dcolumn+\"_index\").fit(df) for column in string_columns ]\n    pipeline_indexx \u003d Pipeline(stages\u003dindexers)\n    df_index \u003d pipeline_indexx.fit(df).transform(df).drop(*string_columns)\n    return df_index",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:21:19 AM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 90.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495135648972_732775081",
+      "id": "20170518-152728_236830643",
+      "dateCreated": "May 18, 2017 3:27:28 PM",
+      "dateStarted": "May 19, 2017 11:13:00 AM",
+      "dateFinished": "May 19, 2017 11:13:00 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Feature shaping - #2 OneHotEncoding",
+      "text": "%pyspark\ndef one_hot_encode(df):\n    string_index_columns \u003d [ col+\u0027_index\u0027 for col in string_columns]\n    string_index_1hot_columns \u003d [ col+\u0027_index_1hot\u0027 for col in string_columns]\n    encoders \u003d [OneHotEncoder(inputCol\u003dcolumn, outputCol\u003dcolumn+\u0027_1hot\u0027) for column in string_index_columns]\n    pipeline_1hot \u003d Pipeline(stages\u003dencoders)\n    df_1hot \u003d pipeline_1hot.fit(df).transform(df).drop(*string_index_columns)\n    return df_1hot",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:21:22 AM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 97.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495135225706_-2033014551",
+      "id": "20170518-152025_862447055",
+      "dateCreated": "May 18, 2017 3:20:25 PM",
+      "dateStarted": "May 19, 2017 11:12:07 AM",
+      "dateFinished": "May 19, 2017 11:12:07 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Feature shaping - #3 VectorAssembly (and rename label)",
+      "text": "%pyspark\ndef vector_assembly(df):\n    df_columns \u003d df.columns\n    # Exclude the  Id\n    df_columns.remove(\u0027Id\u0027)\n    # Exclude the  SalePrice(label)\n    if \u0027SalePrice\u0027 in df_columns: df_columns.remove(\u0027SalePrice\u0027)\n \n    assembler \u003d VectorAssembler(inputCols\u003ddf_columns, outputCol\u003d\"features\")\n    df_assembled \u003d assembler.transform(df).drop(*df_columns).withColumnRenamed(\u0027SalePrice\u0027, \u0027label\u0027)\n    return df_assembled",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:21:29 AM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 93.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495143874876_-1181231466",
+      "id": "20170518-174434_113596650",
+      "dateCreated": "May 18, 2017 5:44:34 PM",
+      "dateStarted": "May 19, 2017 11:19:10 AM",
+      "dateFinished": "May 19, 2017 11:19:10 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Feature shaping - #4 Normalization",
+      "text": "%pyspark\ndef normalization(df):\n    from pyspark.ml.feature import Normalizer\n    from pyspark.ml import Pipeline\n    \n    normalizer \u003d Normalizer(inputCol\u003d\"features\", outputCol\u003d\u0027features_norm\u0027)\n    df_norm \u003d normalizer.transform(df).drop(\u0027features\u0027).withColumnRenamed(\u0027features_norm\u0027, \u0027features\u0027)\n    return df_norm",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:58:47 AM",
+      "config": {
+        "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 275.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495155740896_926076165",
+      "id": "20170518-210220_499972467",
+      "dateCreated": "May 18, 2017 9:02:20 PM",
+      "dateStarted": "May 19, 2017 11:58:48 AM",
+      "dateFinished": "May 19, 2017 11:58:48 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Feature shaping - #5 PCA",
+      "text": "%pyspark\ndef pca(df):\n    pca \u003d PCA(k\u003d3, inputCol\u003d\"features\", outputCol\u003d\"features_pca\")\n    model \u003d pca.fit(df)\n    df_pca \u003d model.transform(df).drop(\u0027features\u0027).withColumnRenamed(\u0027features_pca\u0027, \u0027features\u0027)\n    return df_pca",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:05:02 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495159687517_1421286273",
+      "id": "20170518-220807_904217431",
+      "dateCreated": "May 18, 2017 10:08:07 PM",
+      "dateStarted": "May 19, 2017 11:05:24 AM",
+      "dateFinished": "May 19, 2017 11:05:24 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n## Train the regression model and evaluate on the `train` dataset",
+      "user": "anonymous",
+      "dateUpdated": "May 18, 2017 10:46:22 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eTrain the regression model and evaluate on the \u003ccode\u003etrain\u003c/code\u003e dataset\u003c/h2\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495161341909_-1459365445",
+      "id": "20170518-223541_1559185078",
+      "dateCreated": "May 18, 2017 10:35:41 PM",
+      "dateStarted": "May 18, 2017 10:46:22 PM",
+      "dateFinished": "May 18, 2017 10:46:22 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Apply feature engineering to `train`",
+      "text": "%pyspark\ntrain_index \u003d string_index(train)\ntrain_index_1hot \u003d one_hot_encode(train_index)\ntrain_index_1hot_assembled \u003d vector_assembly(train_index_1hot)\ntrain_index_1hot_assembled_norm \u003d normalization(train_index_1hot_assembled)\ntrain_index_1hot_assembled_norm_pca \u003d pca(train_index_1hot_assembled_norm)\ntrain_index_1hot_assembled_norm_pca",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:13:03 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "DataFrame[Id: int, label: int, features: vector]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495160837453_-1897914605",
+      "id": "20170518-222717_1192631384",
+      "dateCreated": "May 18, 2017 10:27:17 PM",
+      "dateStarted": "May 19, 2017 11:13:03 AM",
+      "dateFinished": "May 19, 2017 11:13:29 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Split `train` into `train_train` and `test_test`",
+      "text": "%pyspark\n# Assign the feature engineered train dataframe to the train_final\ntrain_final \u003d train_index_1hot_assembled_norm_pca\ntrain_train, train_test \u003d train_final.randomSplit([0.9, 0.1], seed\u003d10011)\ntrain_train, train_test",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 12:47:04 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "(DataFrame[Id: int, label: int, features: vector], DataFrame[Id: int, label: int, features: vector])\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495155642253_1064815632",
+      "id": "20170518-210042_1637143601",
+      "dateCreated": "May 18, 2017 9:00:42 PM",
+      "dateStarted": "May 19, 2017 12:47:04 PM",
+      "dateFinished": "May 19, 2017 12:47:05 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Train linear regression model on train_train",
+      "text": "%pyspark\nfrom pyspark.ml.regression import LinearRegression\nfrom pyspark.ml.evaluation import RegressionEvaluator\nfrom pyspark.ml.tuning import ParamGridBuilder, TrainValidationSplit\n\nlr \u003d LinearRegression(maxIter\u003d10, featuresCol\u003d\"features\", labelCol\u003d\"label\", predictionCol\u003d\"prediction\", )\nlrModel \u003d lr.fit(train_train)\n\n\nparamGrid \u003d ParamGridBuilder()\\\n    .addGrid(lr.regParam, [0.1, 0.01]) \\\n    .addGrid(lr.fitIntercept, [False, True])\\\n    .addGrid(lr.elasticNetParam, [0.0, 0.5, 1.0])\\\n    .build()\n\ntvs \u003d TrainValidationSplit(estimator\u003dlr,\n                           estimatorParamMaps\u003dparamGrid,\n                           evaluator\u003dRegressionEvaluator(),\n                           trainRatio\u003d0.8)\n\nmodel \u003d tvs.fit(train_train)",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:13:46 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1495142648353_-2044356757",
+      "id": "20170518-172408_1885559197",
+      "dateCreated": "May 18, 2017 5:24:08 PM",
+      "dateStarted": "May 19, 2017 11:13:46 AM",
+      "dateFinished": "May 19, 2017 11:15:00 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Predict train_test",
+      "text": "%pyspark\ntrain_test_predictions \u003d model.transform(train_test)\ntrain_test_predictions",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:13:49 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "DataFrame[Id: int, label: int, features: vector, prediction: double]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495151899293_-228518810",
+      "id": "20170518-195819_2028395482",
+      "dateCreated": "May 18, 2017 7:58:19 PM",
+      "dateStarted": "May 19, 2017 11:13:49 AM",
+      "dateFinished": "May 19, 2017 11:15:00 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Evaluate prediction performance",
+      "text": "%pyspark\nfrom pyspark.ml.evaluation import RegressionEvaluator\n\nevaluator \u003d RegressionEvaluator(predictionCol\u003d\"prediction\", labelCol\u003d\u0027label\u0027)\n# Metrics: http://spark.apache.org/docs/latest/mllib-evaluation-metrics.html#regression-model-evaluation\nevaluator.evaluate(train_test_predictions, {evaluator.metricName: \"r2\"})",
+      "user": "anonymous",
+      "dateUpdated": "May 19, 2017 11:13:53 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "0.22497359098890068\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1495143865997_-628194055",
+      "id": "20170518-174425_1163988556",
+      "dateCreated": "May 18, 2017 5:44:25 PM",
+      "dateStarted": "May 19, 2017 11:15:00 AM",
+      "dateFinished": "May 19, 2017 11:15:02 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n",
+      "user": "anonymous",
+      "dateUpdated": "May 18, 2017 10:46:23 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1495152841531_1561146646",
+      "id": "20170518-201401_1470778157",
+      "dateCreated": "May 18, 2017 8:14:01 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "/house-prices/note",
+  "id": "2CHV5ADHN",
+  "angularObjects": {
+    "2CGD89D7T:shared_process": [],
+    "2CF6E122K:shared_process": [],
+    "2CH1G59ET:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
