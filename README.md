@@ -1,6 +1,12 @@
 # House Prices
 
-By Chris Wang (mw866@cornell.edu)
+By Chris M Wang 
+
+## Usage
+
+View the Zeppelin notebook here: https://www.zeppelinhub.com/viewer/notebooks/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL213ODY2L2hvdXNlLXByaWNlcy9tYXN0ZXIvbm90ZS5qc29u
+
+
 
 ## Part 1: Take the raw data, propose an initial feature shaping  approach, select a machine learning algorithm available in Spark (or TensorFlow), construct an experiment and analyze the output
 

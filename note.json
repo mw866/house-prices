@@ -1,9 +1,9 @@
 {
   "paragraphs": [
     {
-      "text": "%md\n# CS 5304 Assignments #4: Project Option 2: Creative Feature Engineering\nhttps://www.kaggle.com/c/house-prices-advanced-regression-techniques\nBy Chris M Wang (mw866@cornell.edu)",
+      "text": "%md\n# CS 5304 Assignments #4: Project Option 2: Creative Feature Engineering\nhttps://www.kaggle.com/c/house-prices-advanced-regression-techniques\nBy Chris M Wang ",
       "user": "anonymous",
-      "dateUpdated": "May 18, 2017 10:46:19 PM",
+      "dateUpdated": "May 30, 2017 7:10:47 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -25,7 +25,7 @@
         "msg": [
           {
             "type": "HTML",
-            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eCS 5304 Assignments #4: Project Option 2: Creative Feature Engineering\u003c/h1\u003e\n\u003cp\u003e\u003ca href\u003d\"https://www.kaggle.com/c/house-prices-advanced-regression-techniques\"\u003ehttps://www.kaggle.com/c/house-prices-advanced-regression-techniques\u003c/a\u003e\u003cbr/\u003eBy Chris M Wang (\u003ca href\u003d\"mailto:\u0026#109;\u0026#x77;\u0026#56;\u0026#x36;\u0026#x36;\u0026#x40;\u0026#x63;\u0026#111;\u0026#x72;\u0026#110;\u0026#101;l\u0026#108;\u0026#x2e;\u0026#x65;d\u0026#x75;\"\u003e\u0026#109;\u0026#x77;\u0026#56;\u0026#x36;\u0026#x36;\u0026#x40;\u0026#x63;\u0026#111;\u0026#x72;\u0026#110;\u0026#101;l\u0026#108;\u0026#x2e;\u0026#x65;d\u0026#x75;\u003c/a\u003e)\u003c/p\u003e\n\u003c/div\u003e"
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eCS 5304 Assignments #4: Project Option 2: Creative Feature Engineering\u003c/h1\u003e\n\u003cp\u003e\u003ca href\u003d\"https://www.kaggle.com/c/house-prices-advanced-regression-techniques\"\u003ehttps://www.kaggle.com/c/house-prices-advanced-regression-techniques\u003c/a\u003e\u003cbr/\u003eBy Chris M Wang\u003c/p\u003e\n\u003c/div\u003e"
           }
         ]
       },
@@ -33,8 +33,8 @@
       "jobName": "paragraph_1495117922643_1832487229",
       "id": "20170518-103202_1972109341",
       "dateCreated": "May 18, 2017 10:32:02 AM",
-      "dateStarted": "May 18, 2017 10:46:19 PM",
-      "dateFinished": "May 18, 2017 10:46:19 PM",
+      "dateStarted": "May 30, 2017 7:10:47 PM",
+      "dateFinished": "May 30, 2017 7:10:47 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -78,9 +78,9 @@
     },
     {
       "title": "Initialization",
-      "text": "%pyspark\nimport numpy as np\nfrom pyspark.sql.functions import *\nfrom pyspark.sql.types import *\nfrom pyspark.sql import functions\nfrom __future__ import division\n\nfrom pyspark.ml.feature import VectorAssembler, OneHotEncoder, StringIndexer, PCA\nfrom pyspark.ml import Pipeline\nfrom pyspark.sql.types import *\n\nimport os.path\ndir_name \u003d \"/Users/kylin1989/VM/dev/house-prices/data\"\n\nspark \u003d SparkSession.builder.appName(\"house-price\").config(\"spark.sql.broadcastTimeout\", \"6000\").getOrCreate()",
+      "text": "%pyspark\nimport numpy as np\nfrom pyspark.sql.functions import *\nfrom pyspark.sql.types import *\nfrom pyspark.sql import functions\nfrom __future__ import division\n\nfrom pyspark.ml.feature import VectorAssembler, OneHotEncoder, StringIndexer, PCA\nfrom pyspark.ml import Pipeline\nfrom pyspark.sql.types import *\n\nimport os.path\ndir_name \u003d \"/Users/_/house-prices/data\"\n\nspark \u003d SparkSession.builder.appName(\"house-price\").config(\"spark.sql.broadcastTimeout\", \"6000\").getOrCreate()",
       "user": "anonymous",
-      "dateUpdated": "May 19, 2017 12:10:09 PM",
+      "dateUpdated": "May 30, 2017 6:02:08 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
